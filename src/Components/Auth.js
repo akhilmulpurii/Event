@@ -1,12 +1,12 @@
 class Auth {
     constructor() {
-        const retrievedUserAsString = localStorage.getItem('userObj');
-        const retrievedUser = JSON.parse(retrievedUserAsString); 
-        if (retrievedUser)  {
-          return  this.authenticated = true;
-        } else {
-            return this.authenticated = false;
-        }
+      const uid =  localStorage.getItem('userId');
+      if (uid) {
+        return this.authenticated = true;
+      } else {
+          return this.authenticated = false;
+      }
+
 
     }
 

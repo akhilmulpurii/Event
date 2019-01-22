@@ -5,7 +5,7 @@ import Event from './Event';
 export class EventsList extends Component {
   
   logout() {
-         localStorage.removeItem('userObj');
+         localStorage.removeItem('userId');
          Auth.authenticated = false;
          this.props.history.push('/');
     }

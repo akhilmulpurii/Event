@@ -1,31 +1,35 @@
 import React, { Component } from 'react'
-import Auth from './Auth';
+import fire from './Firebase';
 class Login extends Component {
     constructor(props) {
       super(props)
     
       this.state = {
-        username: '',
+        email: '',
         password: ''
       }
     }
     
-    login() {
+    login() {  
+      const { email, password } = this.state;
+      fire
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((user) => {
+        localStorage.setItem('userId', user.user.uid);
+        console.log(user);
+        this.props.history.push('/eventslist'); 
+      })
+      .catch((error) => {
+        console.log('error')
+      });
 
-const retrievedUserAsString = localStorage.getItem('userObj');
-const retrievedUser = JSON.parse(retrievedUserAsString);   
-if (!retrievedUser){
-  alert('Error');
-} else if(this.state.username === retrievedUser.username && this.state.password === retrievedUser.password) {
-  Auth.authenticated = true;
-  this.props.history.push('/eventslist');
-
-}    
+ 
      }
   render() {
     return (
       <div>
-        <input type="text" placeholder="Username"  value={ this.state.username } onChange={(username) => this.setState({username: username.target.value})} />
+        <input type="text" placeholder="Email"  value={ this.state.email } onChange={(email) => this.setState({email: email.target.value})} />
         <input type="password" placeholder="Password"  value={ this.state.password } onChange={(password) => this.setState({password: password.target.value})} />
         <button onClick={() => this.login()}>Login</button>
         <button onClick={()=> this.props.history.push('/signup')} >Signup</button>
