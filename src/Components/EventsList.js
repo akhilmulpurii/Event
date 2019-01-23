@@ -1,8 +1,22 @@
 import React, { Component } from 'react'
 import Auth from './Auth';
 import Event from './Event';
+import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBDropdown,
+  MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon } from "mdbreact";
+
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import 'bootstrap-css-only/css/bootstrap.min.css'; 
+import 'mdbreact/dist/css/mdb.css';
+import '../App.css';
 
 export class EventsList extends Component {
+  state = {
+    isOpen: false
+  };
+
+  toggleCollapse = () => {
+    this.setState({ isOpen: !this.state.isOpen });
+  }
   
   logout() {
          localStorage.removeItem('userId');
@@ -13,6 +27,31 @@ export class EventsList extends Component {
   render() {
     return (
       <div>
+
+      <MDBNavbar color=" teal accent-3" dark expand="md">
+            <MDBNavbarBrand className=" banner">
+              <strong className="white-text">EvieGO</strong>
+            </MDBNavbarBrand>
+            <MDBNavbarToggler onClick={this.toggleCollapse} />
+            <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
+              <MDBNavbarNav right>
+                <MDBNavItem>
+                  <MDBDropdown>
+                    <MDBDropdownToggle nav caret>
+                      <MDBIcon icon="user" />
+                    </MDBDropdownToggle>
+                    <MDBDropdownMenu className="dropdown-default" right>
+                      <MDBDropdownItem >My Events</MDBDropdownItem>
+                      <MDBDropdownItem onClick={() => this.logout()}>Logout</MDBDropdownItem>
+                    </MDBDropdownMenu>
+                  </MDBDropdown>
+                </MDBNavItem>
+              </MDBNavbarNav>
+            </MDBCollapse>
+          </MDBNavbar>
+ 
+
+
         <h1>Events List</h1>
         <Event 
           eventName="Saraf's 1st Birthday" 
@@ -41,8 +80,6 @@ export class EventsList extends Component {
           tags="" 
           maxParticipants="2 Members" 
         />
-        
-        <button onClick={() => this.logout()}>Logout</button>
       </div>
     )
   }

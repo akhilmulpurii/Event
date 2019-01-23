@@ -1,19 +1,7 @@
 import React, { Component } from 'react'
-import Modal from 'react-modal';
 import {Link} from 'react-router-dom';
+import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter } from 'mdbreact';
 
-const customStyles = {
-    content : {
-      top                   : '50%',
-      left                  : '50%',
-      right                 : 'auto',
-      bottom                : 'auto',
-      marginRight           : '-50%',
-      transform             : 'translate(-50%, -50%)'
-    }
-  };
-
-Modal.setAppElement('#root');
 export class Event extends Component {
   constructor(props){
       super();
@@ -26,27 +14,39 @@ export class Event extends Component {
       tags: props.tags,
       maxParticipants: props.maxParticipants,  
     }
-    // const {eveName, ...rest};
     this.state = {
-        modalIsOpen: false
+        modal: false
       };
-   
-      this.openModal = this.openModal.bind(this);
-      this.closeModal = this.closeModal.bind(this);
   }
-  openModal() {
-    this.setState({modalIsOpen: true});
+  toggle = () => {
+    this.setState({
+      modal: !this.state.modal
+    });
   }
-  
-  closeModal() {
-    this.setState({modalIsOpen: false});
-  } 
   render() {
     return (
       <div>
-        <li><a onClick={this.openModal}>{this.event.eventName}</a></li> 
-        <Link to={`/updateevent/${JSON.stringify(this.event)}`}>Edit</Link>
-        <Modal
+        <li><a onClick={this.toggle}>{this.event.eventName}</a></li> 
+        
+        <MDBContainer>
+          <MDBModal isOpen={this.state.modal} toggle={this.toggle}>
+            <MDBModalHeader toggle={this.toggle}>{this.event.eventName}</MDBModalHeader>
+            <MDBModalBody>
+              <p>Description: {this.event.desc}</p>
+              <p>Duration: {this.event.duration}</p>
+              <p>Location: {this.event.location}</p>
+              <p>Fees: {this.event.fees}</p>
+              <p>Max Members: {this.event.maxParticipants}</p>
+            </MDBModalBody>
+            <MDBModalFooter>
+               <Link to={`/updateevent/${JSON.stringify(this.event)}`}><MDBBtn color="teal accent-3">Edit</MDBBtn></Link>
+            </MDBModalFooter>
+          </MDBModal>
+        </MDBContainer>
+        
+        
+        
+        {/* <Modal
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal}
           style={customStyles}
@@ -60,7 +60,7 @@ export class Event extends Component {
           <p>Fees: {this.event.fees}</p>
           <p>Max Members: {this.event.maxParticipants}</p>
           <button onClick={this.closeModal}>Close</button>
-        </Modal>
+        </Modal> */}
       </div>
     )
   }
