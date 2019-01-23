@@ -1,23 +1,26 @@
-import React, { Component } from 'react'
-import fire from './Firebase';
-class Signup extends Component {
-    constructor(props) {
-      super(props)
+import React, { Component } from 'react';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+import fire from './Firebase'
+import {MDBContainer, MDBAlert} from 'mdbreact';
+
+  class Register extends Component {
+    SignupSchema = Yup.object().shape({
+      email: Yup.string()
+        .email()
+        .required('Required'),
+      username: Yup.string()
+        .min(6)
+        .max(16)
+        .required('Required'),
+      password: Yup.string()
+        .min(6)
+        .max(16)
+        .required('Required'),
+    });
     
-      this.state = {
-        username: '',
-         email: '',
-         password: ''
-      }
-    }
-    signup() {
+    signup = (email,username,password) => {
       const db = fire.firestore();
-      // db.settings({
-      //   timestampsInSnapshots: true
-      // });
-      const username = this.state.username;
-      const email = this.state.email;
-      const password = this.state.password;
       fire
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -32,21 +35,57 @@ class Signup extends Component {
       .catch((error) => {
         console.log('error')
       });
-
-       
     }
-    
-  render() {
-    return (
-      <div>
-                <input type="text" name="username" placeholder="Username"  value={ this.state.username } onChange={(username) => this.setState({username: username.target.value})} />
-        <input type="email" name="email" placeholder="Email"  value={ this.state.email } onChange={(email) => this.setState({email: email.target.value})} />
-        <input type="password" name="password" placeholder="Password"  value={ this.state.password } onChange={(password) => this.setState({password: password.target.value})} />
-        <button onClick={() => this.signup()}>Signup</button>
-        <button onClick={()=> this.props.history.push('/login')} >Login</button>
-      </div>
-    )
+      render() {
+        return(
+          <MDBContainer className="main">
+            <div className="loginContainer">
+            <div className="wrapper">
+            <h1  className='text-center'>Register</h1>
+              <Formik
+                initialValues={{
+                  email: '',
+                  username: '',
+                  password: ''
+                }}
+                validationSchema={this.SignupSchema}
+                onSubmit={(values,action) => {
+                  this.login(values.email,values.username,values.password,values);
+                }}
+              >
+                {({ errors, touched }) => (
+                  <Form>
+                    <div class="input-group pt-4 flex-nowrap">
+                      <Field className="form-control" placeholder="Email" name="email" type="email" />
+                    </div>
+                    <MDBAlert color="danger">{ errors.email && touched.email ? (
+                      <div>{errors.email}</div>
+                    ) : null}</MDBAlert>
+                    <div class="input-group pt-4 flex-nowrap">
+                      <Field className="form-control" placeholder="Username" name="username" type="text" />
+                    </div>
+                    <MDBAlert color="danger">{ errors.username && touched.username ? (
+                      <div>{errors.username}</div>
+                    ) : null}</MDBAlert>
+                    <div class="input-group pt-4 pb-1 flex-nowrap">
+                      <Field className="form-control" placeholder="Password" name="password" type="password" />
+                    </div>
+                    <MDBAlert color="danger">{errors.password && touched.password ? (
+                      <div>{errors.password}</div>
+                    ) : null}</MDBAlert>
+                    <div class="d-flex justify-content-around pt-3">
+                      <button className="btn btn-info" type="submit">Sign Up</button>
+                      <a className="btn btn-primary" href="/">Login</a>
+                    </div>
+                    
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </div>
+        </MDBContainer>
+        );
+      }
   }
-}
 
-export default Signup
+  export default Register

@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import Auth from './Auth';
 import Event from './Event';
-import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBDropdown,
-  MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon } from "mdbreact";
+import NavBar from "./NavBar";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import 'bootstrap-css-only/css/bootstrap.min.css'; 
@@ -17,41 +15,10 @@ export class EventsList extends Component {
   toggleCollapse = () => {
     this.setState({ isOpen: !this.state.isOpen });
   }
-  
-  logout() {
-         localStorage.removeItem('userId');
-         Auth.authenticated = false;
-         this.props.history.push('/');
-    }
-
   render() {
     return (
       <div>
-
-      <MDBNavbar color=" teal accent-3" dark expand="md">
-            <MDBNavbarBrand className=" banner">
-              <strong className="white-text">EvieGO</strong>
-            </MDBNavbarBrand>
-            <MDBNavbarToggler onClick={this.toggleCollapse} />
-            <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
-              <MDBNavbarNav right>
-                <MDBNavItem>
-                  <MDBDropdown>
-                    <MDBDropdownToggle nav caret>
-                      <MDBIcon icon="user" />
-                    </MDBDropdownToggle>
-                    <MDBDropdownMenu className="dropdown-default" right>
-                      <MDBDropdownItem >My Events</MDBDropdownItem>
-                      <MDBDropdownItem onClick={() => this.logout()}>Logout</MDBDropdownItem>
-                    </MDBDropdownMenu>
-                  </MDBDropdown>
-                </MDBNavItem>
-              </MDBNavbarNav>
-            </MDBCollapse>
-          </MDBNavbar>
- 
-
-
+        <NavBar />
         <h1>Events List</h1>
         <Event 
           eventName="Saraf's 1st Birthday" 

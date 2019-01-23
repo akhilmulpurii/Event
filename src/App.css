@@ -3,11 +3,18 @@
 }
 
 body {
-  background-image: linear-gradient(rgb(152, 255, 215),rgb(150, 197, 201));
-  height: 100vh;
   overflow: hidden;
 }
-
+.main {
+margin: 0;
+padding: 0;
+}
+.loginContainer {
+  background-image: linear-gradient(rgb(152, 255, 215),rgb(150, 197, 201));
+  height: 100vh;
+  overflow-x: hidden;
+  width: 100vw;
+}
 .wrapper {
   background-color: #ffffff;
   border-radius: .1rem;
@@ -18,9 +25,6 @@ body {
   max-width: 24rem;
   padding: 30px;
   overflow-y: hidden;
-  margin: 25vh auto;
+  margin: 20vh auto;
 }
-.commonBTN {
-  display: inline-block;
-  padding-left: 8%;
-}
+
